@@ -1,0 +1,554 @@
+================================================================================
+                    PROFIT PLUS FX LANDING PAGE
+                    CODE DOCUMENTATION & CRM INTEGRATION GUIDE
+================================================================================
+
+TABLE OF CONTENTS
+-----------------
+1. File Structure Overview
+2. Code Architecture
+3. Component Breakdown
+4. CSS Architecture
+5. JavaScript Modules
+6. CRM Integration Guide
+7. API Endpoints Required
+8. Database Schema Suggestions
+9. Security Considerations
+10. Customization Guide
+
+================================================================================
+1. FILE STRUCTURE OVERVIEW
+================================================================================
+
+index.html          - Single file containing HTML, CSS, and JavaScript
+logo.png            - Company logo
+rewards/            - Folder containing reward images
+  ├── thailand-trip.png
+  ├── dubai-trip.png
+  ├── singapore-trip.png
+  ├── maldives-trip.png
+  ├── iphone-reward.png
+  ├── bike-reward.png
+  ├── car-reward.png
+  └── quarterly-events.png
+
+================================================================================
+2. CODE ARCHITECTURE
+================================================================================
+
+The landing page is built as a single-file application with three main sections:
+
+A. HTML STRUCTURE
+   - Semantic HTML5 with accessibility features
+   - 8 main sections: Hero, About, Services, Plans, Courses, Referral, Rewards, FAQ, Contact
+   - Mobile-first responsive design
+
+B. CSS ARCHITECTURE
+   - CSS Custom Properties (variables) for theming
+   - Tailwind CSS for utility classes (loaded via CDN)
+   - Custom CSS organized in logical sections:
+     * Base styles & variables
+     * Utility classes
+     * Button components
+     * Animations & effects
+     * Backgrounds & sections
+     * Responsive breakpoints
+
+C. JAVASCRIPT ARCHITECTURE
+   - Modular pattern with 5 main modules:
+     * MarketModule    - Handles live market data ticker
+     * ChartModule     - Canvas chart rendering
+     * NavigationModule - Mobile/tablet menu handling
+     * AnimationModule - Scroll reveal animations
+     * Utils           - Helper functions
+
+================================================================================
+3. COMPONENT BREAKDOWN
+================================================================================
+
+NAVIGATION BAR
+--------------
+- Sticky header with glass morphism effect
+- Logo + brand name on left
+- Navigation links in center (adapts to screen size)
+- Dashboard & Sign Up buttons on right
+- Hamburger menu for mobile/tablet (< 1280px)
+
+HERO SECTION
+------------
+- Animated background with floating orbs, particles, crypto coins
+- Left side: Headline, description, CTA buttons, trust metrics
+- Right side: Dashboard preview card with login form
+- Live market ticker below header
+
+MARKET DATA SECTION
+-------------------
+- Three-column grid layout
+- Market Snapshot: Table of forex/crypto prices
+- Market Trend: Animated canvas chart
+- How It Works: 4-step process cards
+
+INVESTMENT PLANS
+----------------
+- Three-tier pricing cards (Starter, Growth, Elite)
+- Feature lists and CTA buttons
+- Hover effects and visual hierarchy
+
+REFERRAL SYSTEM
+---------------
+- SVG visualization of multi-level bridge (L1-L5)
+- Percentage breakdown display
+- Rank achievement cards (Silver, Gold, Platinum)
+
+REWARDS SECTION
+---------------
+- Grid of reward cards with images
+- Hover zoom effect on images
+- Trips, gadgets, vehicles, events
+
+================================================================================
+4. CSS ARCHITECTURE
+================================================================================
+
+KEY VARIABLES (defined in :root)
+--------------------------------
+--primary          #d4af37 (gold)
+--primary-light    #f4d03f (light gold)
+--primary-glow     rgba(212, 175, 55, 0.35)
+--accent           #c5a028
+--bg-dark          #000000
+--bg-card          rgba(20, 20, 20, 0.9)
+
+UTILITY CLASSES
+---------------
+.glass          - Frosted glass effect with backdrop-filter
+.gold-border    - Gold-tinted border with inner glow
+.luxury-card    - Premium card styling with gradient
+.soft           - Soft shadow effect
+.glow           - Gold glow shadow
+.btn-primary   - Gold gradient button with shine animation
+.btn-outline   - Outlined button with hover fill
+.card-hover    - Hover lift effect for cards
+
+RESPONSIVE BREAKPOINTS
+----------------------
+Mobile:     0 - 768px     (single column, hamburger menu)
+Tablet:     769 - 1023px  (simplified nav, hamburger menu)
+Desktop:    1024 - 1279px (compact nav, 2-col layouts)
+Large:      1280px+       (full navigation, all features)
+
+================================================================================
+5. JAVASCRIPT MODULES
+================================================================================
+
+CONFIGURATION OBJECT
+--------------------
+const CONFIG = {
+  market: {
+    updateInterval: 2500,        // Price update frequency (ms)
+    symbols: [...]               // Initial market data
+  },
+  chart: {
+    dataPoints: 30,              // Number of chart data points
+    lineColor: '#34d399',        // Chart line color
+    gridColor: 'rgba(148, 163, 184, 0.25)'
+  }
+};
+
+MarketModule
+------------
+Purpose: Manage live market ticker data
+Methods:
+  - init()           - Initialize and start updates
+  - renderTicker()   - Update ticker DOM
+  - renderTable()    - Update market table DOM
+  - updatePrices()   - Randomize prices
+  - startUpdates()   - Begin update interval
+
+ChartModule
+-----------
+Purpose: Render and animate canvas chart
+Methods:
+  - init()           - Setup canvas and start animation
+  - draw()           - Render complete chart
+  - drawGrid()       - Draw background grid
+  - drawLine()       - Draw data line
+  - drawGlowDot()    - Draw animated endpoint dot
+  - updateData()     - Shift data array
+
+NavigationModule
+----------------
+Purpose: Handle mobile/tablet navigation
+Methods:
+  - init()           - Bind event listeners
+  - bindEvents()     - Setup click handlers
+  - toggle()         - Open/close menu
+  - open()           - Show mobile nav
+  - close()          - Hide mobile nav
+
+AnimationModule
+---------------
+Purpose: Scroll-triggered reveal animations
+Methods:
+  - init()           - Setup IntersectionObserver
+  - initScrollReveal() - Observe reveal elements
+
+================================================================================
+6. CRM INTEGRATION GUIDE
+================================================================================
+
+STEP 1: BACKEND API SETUP
+-------------------------
+Create the following API endpoints:
+
+A. AUTHENTICATION
+   POST /api/auth/login          - User login
+   POST /api/auth/register       - User registration
+   POST /api/auth/logout         - User logout
+   GET  /api/auth/verify         - Token verification
+
+B. USER DASHBOARD DATA
+   GET  /api/user/dashboard      - Fetch dashboard stats
+   GET  /api/user/investments    - User investment history
+   GET  /api/user/referrals      - Referral tree data
+   GET  /api/user/rank           - Current rank & progress
+
+C. MARKET DATA
+   GET  /api/market/prices       - Live market prices (WebSocket preferred)
+   GET  /api/market/history      - Historical price data
+
+D. INVESTMENT PLANS
+   POST /api/plans/subscribe     - Subscribe to a plan
+   GET  /api/plans/active        - Get user's active plans
+
+E. COURSE ENROLLMENT
+   POST /api/courses/enroll      - Submit enrollment request
+   GET  /api/courses/list        - Available courses
+
+F. CONTACT/INQUIRY
+   POST /api/contact/submit      - Submit contact form
+
+STEP 2: MODIFY JAVASCRIPT
+-------------------------
+Replace demo functionality with real API calls:
+
+A. LOGIN FORM (around line ~2400 in HTML)
+   
+   Current:
+   <button type="button" class="...">Login</button>
+   
+   Change to:
+   <button type="submit" id="loginBtn" class="...">Login</button>
+   
+   Add to JavaScript:
+   ```javascript
+   const AuthModule = {
+     async login(email, password) {
+       try {
+         const response = await fetch('/api/auth/login', {
+           method: 'POST',
+           headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify({ email, password })
+         });
+         const data = await response.json();
+         if (data.token) {
+           localStorage.setItem('authToken', data.token);
+           window.location.href = '/dashboard';
+         }
+       } catch (error) {
+         console.error('Login failed:', error);
+       }
+     }
+   };
+   ```
+
+B. MARKET DATA
+   
+   Replace MarketModule with WebSocket or API polling:
+   ```javascript
+   const MarketModule = {
+     async fetchPrices() {
+       const response = await fetch('/api/market/prices');
+       this.markets = await response.json();
+       this.renderTicker();
+       this.renderTable();
+     },
+     
+     init() {
+       this.fetchPrices();
+       setInterval(() => this.fetchPrices(), 5000);
+     }
+   };
+   ```
+
+C. DASHBOARD DATA
+   
+   Add function to fetch real user data:
+   ```javascript
+   const DashboardModule = {
+     async loadDashboard() {
+       const token = localStorage.getItem('authToken');
+       const response = await fetch('/api/user/dashboard', {
+         headers: { 'Authorization': `Bearer ${token}` }
+       });
+       const data = await response.json();
+       this.updateDashboardUI(data);
+     },
+     
+     updateDashboardUI(data) {
+       // Update DOM elements with real data
+       document.querySelector('.total-investment').textContent = data.totalInvestment;
+       document.querySelector('.plan-status').textContent = data.planStatus;
+       document.querySelector('.direct-referrals').textContent = data.referrals;
+       document.querySelector('.rank').textContent = data.rank;
+     }
+   };
+   ```
+
+STEP 3: FORM HANDLERS
+---------------------
+
+COURSE ENROLLMENT FORM:
+```javascript
+document.querySelector('#courses form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  
+  const response = await fetch('/api/courses/enroll', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: formData.get('name'),
+      phone: formData.get('phone'),
+      course: formData.get('course')
+    })
+  });
+  
+  if (response.ok) {
+    alert('Enrollment submitted successfully!');
+    e.target.reset();
+  }
+});
+```
+
+CONTACT FORM:
+```javascript
+document.querySelector('#contact form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  
+  await fetch('/api/contact/submit', {
+    method: 'POST',
+    body: JSON.stringify(Object.fromEntries(formData))
+  });
+});
+```
+
+================================================================================
+7. API ENDPOINTS REQUIRED
+================================================================================
+
+ENDPOINT                    METHOD    DESCRIPTION
+--------------------------------------------------------------------------------
+/api/auth/login             POST      Authenticate user, return JWT
+/api/auth/register          POST      Create new user account
+/api/auth/logout            POST      Invalidate token
+/api/auth/verify            GET       Validate JWT token
+
+/api/user/dashboard         GET       Get dashboard statistics
+/api/user/investments       GET       Get investment history
+/api/user/referrals         GET       Get referral tree
+/api/user/rank              GET       Get current rank info
+/api/user/profile           GET/PUT   User profile data
+
+/api/market/prices          GET       Current market prices
+/api/market/history         GET       Historical price data
+
+/api/plans/list             GET       Available investment plans
+/api/plans/subscribe        POST      Subscribe to a plan
+/api/plans/active           GET       User's active plans
+
+/api/courses/list           GET       Available courses
+/api/courses/enroll         POST      Enroll in a course
+
+/api/contact/submit         POST      Submit contact form
+
+================================================================================
+8. DATABASE SCHEMA SUGGESTIONS
+================================================================================
+
+USERS TABLE
+-----------
+id              BIGINT PRIMARY KEY
+email           VARCHAR(255) UNIQUE
+password_hash   VARCHAR(255)
+full_name       VARCHAR(255)
+phone           VARCHAR(50)
+rank            ENUM('Member', 'Silver', 'Gold', 'Platinum')
+referral_code   VARCHAR(50) UNIQUE
+referrer_id     BIGINT (self-referential)
+created_at      TIMESTAMP
+
+INVESTMENTS TABLE
+-----------------
+id              BIGINT PRIMARY KEY
+user_id         BIGINT (foreign key)
+plan_type       ENUM('Starter', 'Growth', 'Elite')
+amount          DECIMAL(15,2)
+status          ENUM('Active', 'Completed', 'Cancelled')
+start_date      DATE
+end_date        DATE
+monthly_return  DECIMAL(5,2)
+created_at      TIMESTAMP
+
+REFERRALS TABLE
+---------------
+id              BIGINT PRIMARY KEY
+referrer_id     BIGINT (foreign key to users)
+referred_id     BIGINT (foreign key to users)
+level           INT (1-5 for multi-level)
+commission      DECIMAL(10,2)
+status          ENUM('Pending', 'Paid')
+created_at      TIMESTAMP
+
+TRANSACTIONS TABLE
+------------------
+id              BIGINT PRIMARY KEY
+user_id         BIGINT (foreign key)
+type            ENUM('Deposit', 'Withdrawal', 'Commission', 'Bonus')
+amount          DECIMAL(15,2)
+status          ENUM('Pending', 'Completed', 'Failed')
+description     TEXT
+created_at      TIMESTAMP
+
+COURSE_ENROLLMENTS TABLE
+------------------------
+id              BIGINT PRIMARY KEY
+user_id         BIGINT (foreign key)
+course_name     VARCHAR(255)
+duration        VARCHAR(50)
+fees            DECIMAL(10,2)
+status          ENUM('Pending', 'Confirmed', 'Completed')
+enrolled_at     TIMESTAMP
+
+================================================================================
+9. SECURITY CONSIDERATIONS
+================================================================================
+
+A. AUTHENTICATION
+   - Use JWT tokens with expiration
+   - Store token in httpOnly cookies (preferred) or localStorage
+   - Implement refresh token mechanism
+   - Use HTTPS only
+
+B. FORM SECURITY
+   - Implement CSRF protection
+   - Validate all inputs server-side
+   - Sanitize data to prevent XSS
+   - Rate limit form submissions
+
+C. API SECURITY
+   - Use API keys for public endpoints
+   - Require authentication for user data
+   - Implement CORS properly
+   - Add request logging
+
+D. PASSWORD SECURITY
+   - Hash with bcrypt (minimum 12 rounds)
+   - Enforce strong password policy
+   - Implement password reset flow
+
+================================================================================
+10. CUSTOMIZATION GUIDE
+================================================================================
+
+A. COLOR THEME
+   - Modify CSS variables in :root selector
+   - Primary gold: --primary
+   - Background: --bg-dark
+   - Update Tailwind config for consistency
+
+B. CONTENT UPDATES
+   - Text content: Edit HTML directly
+   - Images: Replace files in /rewards folder
+   - Logo: Replace logo.png
+
+C. ADDING NEW SECTIONS
+   - Copy existing section structure
+   - Use bg-{section} class for background
+   - Add to navigation links
+
+D. MODIFYING PLANS
+   - Locate Plans section in HTML
+   - Edit price ranges and percentages
+   - Update feature lists
+
+E. CHANGING MARKET SYMBOLS
+   - Edit CONFIG.market.symbols array
+   - Format: { symbol, name, price }
+
+F. ANIMATION SPEED
+   - CSS animations: Modify animation-duration
+   - Market updates: Change CONFIG.market.updateInterval
+   - Chart speed: Modify setInterval in ChartModule
+
+================================================================================
+11. PERFORMANCE OPTIMIZATION
+================================================================================
+
+A. IMAGES
+   - Use WebP format for better compression
+   - Implement lazy loading: loading="lazy"
+   - Optimize image sizes for different viewports
+
+B. JAVASCRIPT
+   - Code is already modular
+   - Consider splitting into separate files for production
+   - Minify for production deployment
+
+C. CSS
+   - Purge unused Tailwind classes
+   - Consider critical CSS extraction
+   - Minify for production
+
+D. FONTS
+   - Use font-display: swap
+   - Preload critical fonts
+   - Consider self-hosting fonts
+
+================================================================================
+12. TESTING CHECKLIST
+================================================================================
+
+□ Test on mobile devices (iOS Safari, Android Chrome)
+□ Test on tablets (iPad, Android tablets)
+□ Test on desktop browsers (Chrome, Firefox, Safari, Edge)
+□ Verify all forms submit correctly
+□ Check navigation on all screen sizes
+□ Test login/logout flow
+□ Verify market data updates
+□ Check all images load properly
+□ Test scroll animations
+□ Validate HTML and CSS
+□ Check accessibility (contrast, keyboard nav)
+□ Test loading performance
+
+================================================================================
+SUPPORT & MAINTENANCE
+================================================================================
+
+For technical support or customization assistance:
+- Review the modular JavaScript structure
+- Check browser console for errors
+- Verify API endpoints are responding
+- Test with sample data before production
+
+Regular maintenance:
+- Update market symbols as needed
+- Refresh content quarterly
+- Monitor performance metrics
+- Keep dependencies updated
+
+================================================================================
+                           END OF DOCUMENTATION
+================================================================================
